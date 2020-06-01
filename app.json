@@ -1,0 +1,233 @@
+{
+	"id": "se.klippare",
+	"version": "1.0.0",
+	"compatibility": ">=2.5.0",
+	"sdk": 2,
+	"name": {
+		"en": "Klippare"
+	},
+	"tags": {
+		"en": ["H60","klippare","lyfco"]
+	},
+	"description": {
+		"en": "Klippare"
+	},
+	"category": ["climate","appliances"],
+	"permissions": [],
+		"images": {
+		"large": "/assets/images/large.png",
+		"small": "/assets/images/small.png"
+	},
+	"author": {
+		"name": "Peter Hansson",
+		"email": "homey@husdata.se",
+		"website": "https://husdata.se/"
+	},
+	"contributors" : {
+    "developers" : [
+      {
+        "name": "Peter Hansson",
+		"email": "homey@husdata.se"
+	  }  
+    ]
+  },
+  	"discovery": {
+		"Klippare": {
+				"type": "mdns-sd",
+				"mdns-sd": {
+						"name": "http",
+						"protocol": "tcp"
+						},
+				"id": "{{host}}",
+				"conditions": [
+					[
+						{
+							"field": "host",
+							"match": {
+								"type": "regex",
+								"value": "^klipp"
+							}
+						}
+					]
+				]
+		}
+		
+	},
+  	"capabilities": {
+			"DISTANCE": {  
+				"type": "number",
+				"title": {
+					"en": "Distance"
+				},
+				"getable": true,
+				"setable": false,
+				"units": {
+					"en": ""
+				},
+				"uiComponent": "sensor",
+				"icon": "/assets/iconTemp.svg"
+			},
+			"STATUS": {  
+				"type": "string",
+				"title": {
+					"en": "Status"
+				},
+				"getable": true,
+				"setable": false,
+				"units": {
+					"en": ""
+				},
+				"uiComponent": "sensor",
+				"icon": "/assets/iconTemp.svg"
+			}
+			
+			
+       
+    },
+	
+	"drivers": [
+		{		"id": "Klippare",
+				"discovery": "Klippare",
+				"name": {
+					"en": "Klippare"
+				},
+				"images": {
+					"large": "drivers/H60/assets/images/large.jpg",
+					"small": "drivers/H60/assets/images/small.jpg"
+				},
+				"class": "socket",
+						  "capabilities":  ["DISTANCE","STATUS"],
+				
+				"capabilitiesOptions": {
+						"target_temperature":  {
+							"title": {
+								"en": "Status"
+							}
+						}
+						
+						
+					
+        },
+				"pair": [
+					{
+					"id": "list_devices",
+					"template": "list_devices",
+					"options": {
+						"singular": true
+						},
+					"navigation": {
+						"next": "add_device" 
+						}
+					},
+					{
+						"id": "add_device"
+					}
+				],
+	  
+				"settings": [
+					{
+						"type": "group",
+						"label": {
+							"en": "Klippare settings"
+						},
+						"children": [
+							{
+								"id": "address",
+								"type": "text",
+								"value": "0.0.0.0",
+								"label": {
+									"en": "IP Address"
+								}
+							},
+							
+							{	
+								"id": "polling",
+								"type": "number",
+								"value": 5,
+								"attr": {
+									"min": 5,
+									"max": 3600
+								},
+							"label": {
+								"en": "Polling Frequency"
+								}
+							}
+							
+							
+						
+						
+					]
+				}
+			]
+		}
+
+    ],  
+	
+	
+    "flow": {
+       "triggers": [
+			
+
+			{
+  				"id": "distance_changed",
+  				"title": {
+  					"en": "Avstånd ändrad"
+  				},
+				"tokens": [
+					{
+					"name": "distance_changed",
+					"type": "number",
+					"title": {
+						"en": "Klippare"
+					},
+					"example": {
+					"en": "5"
+                      }
+					}
+				],
+				"args": [
+  					{
+  					"name": "device",
+  					"type": "device",
+  					"placeholder": {
+  						"en": "Select device"
+					},
+					"filter": "driver_id=Klippare"
+  					}
+  				]
+  			}
+			,
+			{
+  				"id": "status_changed",
+  				"title": {
+  					"en": "Status ändrad"
+  				},
+				"tokens": [
+					{
+					"name": "status_changed",
+					"type": "string",
+					"title": {
+						"en": "Klippare"
+					},
+					"example": {
+					"en": "Standby"
+                      }
+					}
+				],
+				"args": [
+  					{
+  					"name": "device",
+  					"type": "device",
+  					"placeholder": {
+  						"en": "Select device"
+					},
+					"filter": "driver_id=Klippare"
+  					}
+  				]
+  			}
+			
+		]
+    }
+
+ 
+}
